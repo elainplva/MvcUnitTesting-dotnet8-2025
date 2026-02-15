@@ -33,7 +33,29 @@ namespace MvcUnitTesting.Tests.Controllers
 
         }
 
-       
+
+        [TestMethod]
+        public void show_ViewData_genre_test()
+        {
+            // Arrange
+            var bookRepository = Mock.Create<IRepository<Book>>();
+            Mock.Arrange(() => bookRepository.GetAll()).
+                Returns(new List<Book>()
+                {
+                    new Book { Genre="Fiction", ID=1, Name="Moby Dick", Price=12.50m},
+                    new Book { Genre="Fiction", ID=2, Name="War and Peace", Price=17m},
+                    new Book { Genre="Science Fiction", ID=3, Name="Escape from the vortex", Price=12.50m},
+                }).MustBeCalled();
+
+            HomeController controller = new HomeController(bookRepository, null);
+
+            // Act
+            ViewResult result = controller.Index("Fiction") as ViewResult;
+
+            // Assert
+            Assert.AreEqual("Fiction", result.ViewData["Genre"]);
+        }
+
         [TestMethod]
         public void Privacy()
         {
@@ -48,6 +70,6 @@ namespace MvcUnitTesting.Tests.Controllers
             Assert.AreEqual("Your Privacy is our concern", result.ViewData["Message"]);
         }
 
-       
+
     }
 }
