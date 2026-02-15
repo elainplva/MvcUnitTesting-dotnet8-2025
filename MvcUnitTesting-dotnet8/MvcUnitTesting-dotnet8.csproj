@@ -14,11 +14,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Tracker" Version="1.0.7-beta" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Data\" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="wwwroot\lib\**" />
+	</ItemGroup>
 
 </Project>

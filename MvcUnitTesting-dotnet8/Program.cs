@@ -1,5 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using MvcUnitTesting_dotnet8.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Tracker;
+using Tracker.WebAPIClient;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace MvcUnitTesting_dotnet8
 {
@@ -37,6 +44,9 @@ namespace MvcUnitTesting_dotnet8
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            ActivityAPIClient.Track(StudentID: "s00250500", StudentName: "Elain Polakova",
+                activityName: "Rad302 2026 Week 2 Lab 1", Task: "Running Week 2 App");
 
             app.Run();
         }
