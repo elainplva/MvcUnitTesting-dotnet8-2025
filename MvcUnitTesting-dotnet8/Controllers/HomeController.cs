@@ -37,6 +37,44 @@ namespace MvcUnitTesting_dotnet8.Controllers
             return View(books);
         }
 
+        // Get books by genre using Find method from repository
+        public IActionResult BooksByGenre(string genre)
+        {
+            if (string.IsNullOrEmpty(genre))
+            {
+                return BadRequest("Genre parameter is required");
+            }
+
+            var books = repository.Find(b => b.Genre == genre);
+            ViewData["Genre"] = genre;
+            return View("Index", books);
+        }
+
+        // Get book count for a specific genre
+        public IActionResult GenreCount(string genre)
+        {
+            if (string.IsNullOrEmpty(genre))
+            {
+                return BadRequest("Genre parameter is required");
+            }
+
+            var books = repository.Find(b => b.Genre == genre).ToList();
+            ViewData["Genre"] = genre;
+            ViewData["Count"] = books.Count();
+            return View(books);
+        }
+
+        // Get a single book by ID
+        public IActionResult GetBook(int id)
+        {
+            var book = repository.Get(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return View(book);
+        }
+
         public IActionResult Privacy()
         {
             ViewData["Message"] = "Your Privacy is our concern";

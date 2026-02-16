@@ -23,11 +23,19 @@ namespace MvcUnitTesting_dotnet8.Models
         public void Add(T entity)
         {
             Context.Set<T>().Add(entity);
+            Context.SaveChanges();
+        }
+
+        public void Update(T entity)
+        {
+            Context.Set<T>().Update(entity);
+            Context.SaveChanges();
         }
 
         public void Remove(T entity)
         {
             Context.Set<T>().Remove(entity);
+            Context.SaveChanges();
         }
 
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
@@ -46,12 +54,14 @@ namespace MvcUnitTesting_dotnet8.Models
         public void AddRange(IEnumerable<T> entities)
         {
             Context.Set<T>().AddRange(entities);
+            Context.SaveChanges();
         }
-        
+
 
         public void RemoveRange(IEnumerable<T> entities)
         {
             Context.Set<T>().RemoveRange(entities);
+            Context.SaveChanges();
         }
     }
 }

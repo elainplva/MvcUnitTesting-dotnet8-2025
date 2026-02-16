@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MvcUnitTesting_dotnet8.Models;
+using MvcUnitTesting_dotnet8.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +25,19 @@ namespace MvcUnitTesting_dotnet8
             // Register the repository as a service
             builder.Services.AddScoped<IRepository<Book>, WorkingBookRepository<Book>>();
 
+            // Register DbSeederTesting as a scoped service for database seeding
+            builder.Services.AddScoped<DbSeederTesting>();
+
             var app = builder.Build();
+
+            // Seed the database using scoped factory pattern
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeederTesting>();
+                var hostEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+                // Reinitialize with proper environment if needed
+                dbSeeder.Seed();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -46,7 +59,7 @@ namespace MvcUnitTesting_dotnet8
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             ActivityAPIClient.Track(StudentID: "s00250500", StudentName: "Elain Polakova",
-                activityName: "Rad302 2026 Week 2 Lab 1", Task: "Running Week 2 App");
+                activityName: "Rad302 2026 Week 2 Lab 1", Task: "Implementing Production Repository Pattern");
 
             app.Run();
         }
